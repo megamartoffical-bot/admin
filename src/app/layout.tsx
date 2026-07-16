@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CartX",
-  description: "Vendor management website",
+  title: "Mega Mart | Admin Dashboard",
+  description: "Admin Dashboard - Vendor management and product catalog",
 };
 
 export default function RootLayout({

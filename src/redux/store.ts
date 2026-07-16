@@ -14,7 +14,22 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+
+// Custom storage that handles SSR environments
+const createStorage = () => {
+  if (typeof window === "undefined") {
+    // Server-side: return no-op storage
+    return {
+      getItem: () => Promise.resolve(null),
+      setItem: () => Promise.resolve(),
+      removeItem: () => Promise.resolve(),
+    };
+  }
+  // Client-side: use localStorage
+  return require("redux-persist/lib/storage").default;
+};
+
+const storage = createStorage();
 
 const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
@@ -26,11 +41,13 @@ const rootReducer = combineReducers({
   shops: shopsReducer,
   attributes: attributeReducer,
 });
+
 const persistConfig = {
   key: "root",
   storage,
   whitelist: ["auth"],
 };
+
 const persistedReducers = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

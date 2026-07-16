@@ -39,6 +39,7 @@ export default function AuthForm({ type }: AuthFormProps) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
 
   const onSubmit = async (data: FormData) => {
@@ -69,7 +70,14 @@ export default function AuthForm({ type }: AuthFormProps) {
   return (
     <section className="min-h-screen mx-auto overflow-hidden flex justify-center flex-col w-96 md:w-[450px] lg:w-[666px] sm:px-8">
       <div className="flex justify-center">
-        <Image src={site?.siteLogo ? site?.siteLogo : "/logo.png"} alt="logo" width={100} height={100} />
+        <Image 
+          src={imageError || !site?.siteLogo ? "/logo.png" : site?.siteLogo}
+          alt="logo" 
+          width={100} 
+          height={100}
+          onError={() => setImageError(true)}
+          priority
+        />
       </div>
       <h2 className="my-6 capitalize text-center">{type} to dashboard</h2>
       <div className=" bg-white border  px-5 py-5 border-gray-300 rounded-lg text-black">
